@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import "./App.css";
 import { IBug } from "./IBug";
+import { v4 as uuid } from "uuid";
 
 function App() {
   const [newBugDescription, setNewBugDescription] = useState<string>("");
   const [newBugPriority, setNewBugPriority] = useState<string>("Medium");
   const [bugList, setBugList] = useState<IBug[]>([]);
 
-  const addBug = () => {};
+  const addBug = (event: FormEvent) => {
+    event.preventDefault();
+    const newBug: IBug = {
+      id: uuid(),
+    };
+  };
   const deleteBug = () => {};
 
   return (
@@ -31,6 +37,7 @@ function App() {
           <option value="Medium">Medium</option>
           <option value="Hight">Hight</option>
         </select>
+        <button type="submit"> Add New Bug</button>
       </form>
     </div>
   );
