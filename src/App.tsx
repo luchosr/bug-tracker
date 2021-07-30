@@ -26,13 +26,13 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="app">
       <h1>🐞 Bug Tracker</h1>
       <BugListTable
         bugs={bugList}
         onDeleteBug={(id: string) => deleteBug(id)}
       />
-      <form onSubmit={addBug}>
+      <form className="add-new-bug-form" onSubmit={addBug}>
         <label htmlFor="newBugDescription">New bug Description:</label>
         <input
           type="text"

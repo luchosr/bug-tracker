@@ -15,7 +15,7 @@ table th {
   background-color: azure;
 }
 
-.app-new-bug-form {
+.add-new-bug-form {
   width: 100%;
   display: flex;
   flex-direction: column;
