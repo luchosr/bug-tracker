@@ -1,8 +1,8 @@
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import BugListTable from "./BugListTable";
 import { BugPriority, IBug } from "./IBug";
 
-test("The bugs table should display a list of bugs", () => {
+test("the bug table should display a list of bugs", () => {
   const bugList: IBug[] = [
     { id: "1234", description: "A test bug", priority: BugPriority.LOW },
     {
@@ -10,14 +10,51 @@ test("The bugs table should display a list of bugs", () => {
       description: "Another test bug",
       priority: BugPriority.MEDIUM,
     },
-    {
-      id: "3456",
-      description: "One more test bug",
-      priority: BugPriority.HIGHT,
-    },
+    { id: "3456", description: "One more test bug", priority: BugPriority.LOW },
   ];
+
   render(<BugListTable bugs={bugList} onDeleteBug={() => {}} />);
   const rows = screen.getAllByRole("row");
+  for (let index = 1; index < rows.length; index += 1) {
+    expect(rows[index]).toHaveTextContent(bugList[index - 1].description);
+  }
+});
+
+test("the resolved button should remove the bug", () => {
+  let bugList: IBug[] = [
+    { id: "1234", description: "A test bug", priority: BugPriority.LOW },
+    {
+      id: "2345",
+      description: "Another test bug",
+      priority: BugPriority.MEDIUM,
+    },
+    { id: "3456", description: "One more test bug", priority: BugPriority.LOW },
+  ];
+
+  const removeFirstBug = (id: string) => {
+    console.log("Removed Bug: ", id);
+    bugList = bugList.filter((bug) => bug.id !== id);
+  };
+
+  const { rerender } = render(
+    <BugListTable
+      bugs={bugList}
+      onDeleteBug={(id: string) => {
+        removeFirstBug(id);
+      }}
+    />
+  );
+  fireEvent.click(screen.getAllByText("Resolved")[0]);
+  rerender(
+    <BugListTable
+      bugs={bugList}
+      onDeleteBug={(id: string) => {
+        removeFirstBug(id);
+      }}
+    />
+  );
+  const rows = screen.getAllByRole("row");
+  expect(rows.length).toBe(3);
   for (let index = 1; index < rows.length; index += 1) {
     expect(rows[index]).toHaveTextContent(bugList[index - 1].description);
   }
