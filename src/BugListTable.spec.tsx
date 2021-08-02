@@ -1,4 +1,4 @@
-import { render, fireEvent, waitFor, screen } from "@testing-library/react";
+import { render, fireEvent, screen } from "@testing-library/react";
 import BugListTable from "./BugListTable";
 import { BugPriority, IBug } from "./IBug";
 
